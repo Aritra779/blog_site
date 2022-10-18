@@ -2,7 +2,8 @@ extends layout
 block layout-content 
     .page-header #{blog.title}
     .subtitle #{blog.createdAt}
-    .subtitle #{blog.authorId.name}
+    .subtitle
+        a(href=`/user/${blog.authorId.id}`) #{blog.authorId.name}
     .container.mt-5.mb-5 #{blog.content}
         if blog.authorId.toString() === session.user
             .container.row.row-cols-1.row-cols-md-2.g-4.mt-5.justify-content-center
@@ -23,10 +24,10 @@ block layout-content
             .list-group-item
                 .d-flex.w-100.justify-content-between
                     section
-                        a(href=`user/${comment.authorId}`).text-muted #{comment.authorId}
+                        a(href=`/user/${comment.authorId.toString()}`).text-muted #{comment.authorId}
                         p #{comment.content}
                     section
-                        if session.user === comment.authorId
+                        if(session.user == comment.authorId)
                             .row
                                 .col-md-6
                                     a(href=`/blog/${blog.id}/comment/${comment.id}`).btn.btn-info Edit

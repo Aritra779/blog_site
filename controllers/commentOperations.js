@@ -2,9 +2,8 @@ import mongoose from "mongoose";
 import { BlogModel, CommentModel } from "../models/index.js";
 
 const createComment = async (req, res) => {
-    let {blog_id, user_id} = req.params;
+    const {blog_id, user_id} = req.params;
     const {comment} = req.body;
-    user_id = '6349209cab0d926b049729be';
     try{
         const newComment = await CommentModel.create({
             content : comment,

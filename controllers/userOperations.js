@@ -74,8 +74,9 @@ const viewProfile = async (req, res) => {
     const userId = req.params.user_id;
     const user = await UserModel.findById(userId);
     const posts = await BlogModel.find({authorId : userId});
-    const comments = await CommentModel.find({authorId : userId});
-    res.render("profile.pug", { title: "Profile", profile : {user : user, posts : posts, comments : comments} });
+    const comments = await CommentModel.find({authorId : userId}).populate('associatedBlogId');
+    //console.log(comments);
+    res.render("profile.pug", { title: "Profile", profile : {user : user, blogs : posts, comments : comments} });
 }
 
 const editProfileView = async (req, res) => {

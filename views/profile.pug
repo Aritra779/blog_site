@@ -1,13 +1,75 @@
+extends layout
 block layout-content 
-    .container.mt-5.mb-5 
+    .container.mt-5.mb-5
         aside.user-details 
-            h3.user-name #{profile.user.name}
-            p.user-details #{profile.user.address}
-        .row-col-md-2
-        each blog, index  in profile.posts  
-            a(href=`/blog/${blog.id}`).blog-overview
-                p #{index}
-                
+            h3.page-header #{profile.user.name}
+            p.subtitle #{profile.user.address}
+        .text-center.fs-2 Blogs
+        .container.mt-5.mb-5
+            .row.row-cols-sm-2.row-cols-md-3.g-4
+                each blog in profile.blogs
+                    .col
+                        .card.h-100
+                            .card-body
+                                h5.card-title #{blog.title}
+                                p.card-text #{blog.createdAt.toLocaleString()}
+                                .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+                                    .col.d-grid
+                                        a(href=`/blog/${blog.id}`).btn.btn-primary Read
+                                    if(session.user == blog.authorId)
+                                        .col.d-grid 
+                                            a(href=`/blog/${blog.id}/edit`).btn.btn-info Edit
+                                        .col.d-grid
+                                            button.deleteBlog(type="submit" blog-id=blog.id).btn.btn-danger Delete
         
+        .text-center.fs-2 Comments
+        .container.mt-5.mb-5
+            .row.row-cols-sm-2.row-cols-md-3.g-4
+                each comment in profile.comments
+                    .col
+                        .card.h-100
+                            .card-body
+                                h5.card-title #{comment.associatedBlogId.title}
+                                p.card-text #{comment.content}
+                                p.card-text #{comment.createdAt.toLocaleString()}
+                                .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+                                    .col.d-grid
+                                        a(href=`/blog/${comment.associatedBlogId}`).btn.btn-primary Go to Blog
+                                    if(session.user == comment.authorId)
+                                        .col.d-grid 
+                                            a(href=`/blog/${comment.associatedBlogId}/comment/${comment.id}`).btn.btn-info Edit
+                                        .col.d-grid
+                                            button.deleteComments(type="submit" blog-id=comment.associatedBlogId comment-id=comment.id).btn.btn-danger Delete
+        
+        script.
+            const blogBtns = document.querySelectorAll('.deleteBlog');
+            if(blogBtns){
+                blogBtns.forEach(btn => {
+                    btn.addEventListener('click', (req) => { 
+                    fetch(`/blog/${btn.getAttribute('blog-id')}/`,{
+                        method : 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then((res) => res.json())
+                    .then((data) => location.reload())
+                    });
+                })
+            }
 
-                
+            const commentBtns = document.querySelectorAll('.deleteComments');
+            if(commentBtns){
+                commentBtns.forEach(btn => {
+                    btn.addEventListener('click', (req) => { 
+                    fetch(`/blog/${btn.getAttribute('blog-id')}/comment/${btn.getAttribute('comment-id')}`,{
+                        method : 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then((res) => res.json())
+                    .then((data) => location.reload())
+                    });
+                })
+            }
