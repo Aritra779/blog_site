@@ -1,0 +1,16 @@
+extends layout 
+
+block layout-content 
+    h3.page-header SignUp page
+    form(action="/auth/signup", method="post").container.mt-5.mb-5 
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Name") Name
+            input#Name(type="text", name="name" placeholder="Your name")
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Email") Email 
+            input#Email(type="email", name="email" placeholder="your_email@your.domain")
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Password") Password
+            input#Password(type="password", name="password" placeholder="Your password")
+        .form-group.d-flex.justify-content-center.m-2
+            button(type="submit").btn.btn-outline-success  SignUp

@@ -1,0 +1,24 @@
+extends layout 
+
+block layout-content 
+    
+    //form(action=`/blog/${comment.associatedBlogId}/comment/${comment.id}`, method="patch").mt-5.mb-5
+    .mb-3.d-flex.justify-content-around
+        label(for="Comment").form-label Comment
+        textarea#Comment(name="comment", rows="10" placeholder=comment.content)
+    .mb-3.d-flex.justify-content-center
+        button#patchBtn(type="submit" blog-id=comment.associatedBlogId comment-id=comment.id).btn.btn-success Submit
+    script.
+        const btn = document.getElementById('patchBtn');
+        -btn.addEventListener('click', (req) => {    
+            const comment = document.getElementById('Comment').value;
+            fetch(`/blog/${btn.getAttribute('blog-id')}/comment/${btn.getAttribute('comment-id')}`,{
+                method : 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify({'comment' : comment})
+            })
+            .then((res) => res.json())
+            .then((data) => window.location = `/blog/${btn.getAttribute('blog-id')}`)
+        });

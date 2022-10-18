@@ -1,0 +1,50 @@
+extends layout
+block layout-content 
+    header.page-header Feed
+    .container.mt-5.mb-5 
+        .row.g-4 
+            .col-md-6
+                .card.h-100
+                    .card-body
+                        h5.card-title View Profile
+                        a(href=`/user/${session.user}`).btn.btn-primary View
+            .col-md-6
+                .card.h-100
+                    .card-body
+                        h5.card-title new Blog 
+                        a(href='/blog/new').btn.btn-primary new 
+                    
+    
+    .container.mt-5.mb-5
+        .row.row-cols-sm-2.row-cols-md-3.g-4
+            each post in blogs
+                //p #{post.authorId.toString()}
+                .col
+                    .card.h-100
+                        .card-body
+                            h5.card-title #{post.title}
+                            p.card-text #{post.createdAt.toLocaleString()}
+                            .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+                                .col.d-grid
+                                    a(href=`/blog/${post.id}`).btn.btn-primary Read
+                                if session.user === post.authorId.toString()
+                                    .col.d-grid 
+                                        a(href=`/blog/${post.id}/edit`).btn.btn-info Edit
+                                    .col.d-grid
+                                        button.deleteBlog(type="submit" blog-id=post.id).btn.btn-danger Delete
+    script.
+        const btns = document.querySelectorAll('.deleteBlog');
+        if(btns){
+            btns.forEach(btn => {
+                btn.addEventListener('click', (req) => { 
+                fetch(`/blog/${btn.getAttribute('blog-id')}/`,{
+                    method : 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((res) => res.json())
+                .then((data) => window.location = '/')
+                });
+            })
+        }

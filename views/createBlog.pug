@@ -1,0 +1,12 @@
+extends layout 
+block layout-content
+    form(action=`/blog/new`, method="post").container.mt-5
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Title") Title 
+            input#Title(type="text", name="title" placeholder='Your blog Name')
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Content") Content
+            textarea#Content(name="content", rows="10" placeholder="Type your blog content here..")
+        .form-group.d-flex.justify-content-around
+            button(type="submit").btn.btn-success Submit
+              

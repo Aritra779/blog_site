@@ -1,0 +1,53 @@
+body{
+    background-color:antiquewhite;
+}
+
+#root{
+    min-height: 100vh;
+}
+
+.title{
+    text-align: center;
+    text-decoration: underline;
+    font-size: 5rem;
+}
+
+.title a{
+    color : black;
+}
+
+.nav-item{
+    text-align: center;
+    margin : 3px;
+    width : 100%;
+}
+
+.page-header{
+    text-align: center;
+    color: blueviolet;
+    font-size: 2rem;
+}
+
+.subtitle{
+    font-style: italic;
+    padding:2% 10%;
+    text-align: right;
+}
+
+#Comment, #Content, #Title, #Name, #Email, #Password{
+    min-width: 50%;
+    min-height: 50px;
+}
+
+#Content, #Title{
+    min-width : 80%;
+}
+
+
+
+.footer{
+    text-align: center;
+    color: blueviolet;
+    font-size: 2rem;
+}
+

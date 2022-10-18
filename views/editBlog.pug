@@ -1,0 +1,33 @@
+extends layout 
+block layout-content
+    .container.mt-5
+        .d-flex.justify-content-around.m-2
+            label(for="Title") Title 
+            input#Title(type="text", name="title" placeholder='Your blog Name' value=blog.title)
+        .d-flex.justify-content-around.m-2
+            label(for="Content") Content
+            textarea#Content(name="content", rows="10" placeholder=blog.content)
+        .d-flex.justify-content-around
+            button#editBlog(type="submit" blog-id=blog.id).btn.btn-success Submit
+
+    script.
+            const btn = document.getElementById('editBlog');
+            const bdy = {
+                'title' : document.getElementById('Title').value,
+                'content' : document.getElementById('Content').value
+            }
+            console.log(bdy)
+            if(btn){
+                btn.addEventListener('click', (req) => { 
+                fetch(`/blog/${btn.getAttribute('blog-id')}/edit`,{
+                    method : 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bdy)
+                })
+                .then((res) => res.json())
+                .then((data) => window.location = `/blog/${btn.getAttribute('blog-id')}`)
+                });
+            }
+              

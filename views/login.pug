@@ -1,0 +1,15 @@
+extends layout
+
+block layout-content  
+    h1.page-header #{title}
+    if(msg !== null)
+        h4.subtitle #{msg}
+    form(action="/auth/login", method="post").container.mt-5.mb-5
+        .form-group.d-flex.justify-content-around.m-2 
+            label(for="Email") UserName
+            input#Email(type="email", name="username" placeholder="your_email@domain.com") 
+        .form-group.d-flex.justify-content-around.m-2
+            label(for="Password") Password
+            input#Password(type="password", name="password" placeholder="Your password")
+        .form-group.d-flex.justify-content-center.m-2 
+            button(type="submit").btn.btn-outline-success Login

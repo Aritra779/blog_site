@@ -1,0 +1,55 @@
+extends layout
+block layout-content 
+    .page-header #{blog.title}
+    .subtitle #{blog.createdAt}
+    .subtitle #{blog.authorId.name}
+    .container.mt-5.mb-5 #{blog.content}
+        if blog.authorId.toString() === session.user
+            .container.row.row-cols-1.row-cols-md-2.g-4.mt-5.justify-content-center
+                .col.d-grid
+                    a(href=`/blog/${blog.id}/edit`).btn.btn-outline-info Edit
+                .col.d-grid
+                    a(href=`/blog/`).btn.btn-outline-danger Delete
+    
+    .page-header Comments
+    form(action=`/blog/${blog.id}/comment`, method="post").container
+        .form-group.d-flex.justify-content-around
+            label(for="comment") Your Comment 
+            textarea#Comment(name="comment", rows="2" placeholder="I loved it")
+        .d-flex.justify-content-center.mt-4
+            button(type="submit").btn.btn-outline-success Comment
+    .container.mt-5.mb-5.list-group.mt-3        
+        each comment, index in blog.comments
+            .list-group-item
+                .d-flex.w-100.justify-content-between
+                    section
+                        a(href=`user/${comment.authorId}`).text-muted #{comment.authorId}
+                        p #{comment.content}
+                    section
+                        if session.user === comment.authorId
+                            .row
+                                .col-md-6
+                                    a(href=`/blog/${blog.id}/comment/${comment.id}`).btn.btn-info Edit
+                                .col-md-6
+                                    button(type="submit" blog-id=comment.associatedBlogId comment-id=comment.id).deleteBtn.btn.btn-danger Delete
+
+        script.
+            const btns = document.querySelectorAll('.deleteBtn');
+            if(btns){
+                btns.forEach(btn => {
+                    btn.addEventListener('click', (req) => { 
+                    console.log('clicked') 
+                    fetch(`/blog/${btn.getAttribute('blog-id')}/comment/${btn.getAttribute('comment-id')}`,{
+                        method : 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then((res) => res.json())
+                    .then((data) => window.location = `/blog/${btn.getAttribute('blog-id')}`)
+                    });
+                })
+            }
+                
+
+

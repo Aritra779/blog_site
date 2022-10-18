@@ -1,0 +1,13 @@
+block layout-content 
+    .container.mt-5.mb-5 
+        aside.user-details 
+            h3.user-name #{profile.user.name}
+            p.user-details #{profile.user.address}
+        .row-col-md-2
+        each blog, index  in profile.posts  
+            a(href=`/blog/${blog.id}`).blog-overview
+                p #{index}
+                
+        
+
+                
