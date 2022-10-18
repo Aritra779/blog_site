@@ -3,6 +3,7 @@ import { Schema, model, Types } from "mongoose";
 const CommentSchema = new Schema({
     authorId : {
         type : Types.ObjectId,
+        ref : 'user',
         required : [true, 'every comment must be written by someone.']
     },
     content : {
@@ -11,6 +12,7 @@ const CommentSchema = new Schema({
     },
     associatedBlogId : {
         type : Types.ObjectId,
+        ref : 'blog',
         required : [true, 'must be associated with a blog.']
     }
 },{timestamps: true});

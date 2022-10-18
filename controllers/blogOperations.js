@@ -24,7 +24,14 @@ const viewBlog = async (req, res) => {
     try{
         const blog = await BlogModel
             .findById(req.params.blog_id)
-            .populate('authorId');
+            .populate('authorId')
+            .populate({
+                path : 'comments',
+                populate : {
+                    path : 'authorId',
+                    model : 'user'
+                } 
+            });
         res.render('blog.pug', {blog : blog});
     }catch(err){
         const blogs = await BlogModel.find();
@@ -53,6 +60,7 @@ const editBlog = async (req, res) => {
         blog.content = content;
         //console.log(blog);
         await blog.save();
+        //console.log(blog);
         res.status(200).json({msg : 'Editted'})
     }catch(err){
         res.render('editBlog.pug', {blog : blog});
